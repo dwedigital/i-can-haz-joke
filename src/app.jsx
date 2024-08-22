@@ -5,10 +5,10 @@ import Footer from "./footer";
 export function App() {
   const [count, setCount] = useState(0);
   const [jokeTime, setJokeTime] = useState(new Date().toLocaleTimeString());
-
+  const [genre, setGenre] = useState("dad");
   const [joke, setJoke] = useState("");
 
-  const getJoke = () => {
+  const getDadJoke = () => {
     fetch("https://icanhazdadjoke.com/", {
       headers: {
         Accept: "application/json",
@@ -16,20 +16,60 @@ export function App() {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         setJoke(data.joke);
-        setCount(count + 1);
-        setJokeTime(new Date().toLocaleTimeString());
       })
       .catch((error) => {
         console.log(error);
       });
   };
 
+  const getChuckJoke = () => {
+    fetch("https://api.chucknorris.io/jokes/random")
+      .then((response) => response.json())
+      .then((data) => {
+        setJoke(data.value);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const getJoke = () => {
+    if (genre === "dad") {
+      getDadJoke();
+    } else {
+      getChuckJoke();
+    }
+    setCount(count + 1);
+    setJokeTime(new Date().toLocaleTimeString());
+  };
+
   useEffect(() => {
     // Fetch data from external API
     getJoke();
   }, []);
+
+  const GenreSelector = () => {
+    return (
+      <form class="max-w-sm mx-auto">
+        <label
+          for="countries"
+          class="block mb-2 font-medium text-center text-sm text-gray-900 dark:text-white"
+        >
+          Choose genre
+        </label>
+        <select
+          id="countries"
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          onChange={(e) => setGenre(e.target.value)}
+          value={genre}
+        >
+          <option value="dad">Dad</option>
+          <option value="chuck">Chuck Norris</option>
+        </select>
+      </form>
+    );
+  };
 
   const Clock = () => {
     const [time, setTime] = useState(new Date().toLocaleTimeString());
@@ -40,19 +80,20 @@ export function App() {
       return () => clearInterval(interval);
     }, []);
     return (
-      <span class="text-pretty text-5xl font-semibold dark:text-slate-100 text-green-800">
+      <span class="text-pretty text-5xl font-semibold dark:text-slate-100 text-green-600">
         {time}
       </span>
     );
   };
 
   return (
-    <div class="flex justify-center flex-col items-center w-full h-screen gap-y-6 dark:bg-slate-600">
+    <div class="flex flex-col justify-center items-center w-full h-screen gap-y-8 dark:bg-slate-600">
       <Clock />
       <hr class="w-48 h-1 mx-auto my-4 bg-gray-100 border-0 rounded md:my-10 dark:bg-gray-700" />
+      <GenreSelector />
       <blockquote class="text-xl italic font-semibold text-gray-900 dark:text-white px-10">
         <svg
-          class="w-8 h-8 text-yellow-400 dark:text-slate-400 mb-4"
+          class="w-8 h-8 text-green-400 dark:text-slate-400 mb-4"
           aria-hidden="true"
           xmlns="http://www.w3.org/2000/svg"
           fill="currentColor"
