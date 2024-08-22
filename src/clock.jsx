@@ -9,7 +9,7 @@ export default function Clock() {
     return () => clearInterval(interval);
   }, []);
   return (
-    <span class="text-pretty text-5xl font-semibold dark:text-slate-100 text-green-600">
+    <span class="text-pretty text-5xl font-semibold dark:text-slate-100 text-green-600 min-w-full text-center">
       {time}
     </span>
   );

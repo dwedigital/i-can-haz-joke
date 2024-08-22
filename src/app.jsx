@@ -9,8 +9,15 @@ import { GenreSelector } from "./utility";
 export function App() {
   const [count, setCount] = useState(0);
   const [jokeTime, setJokeTime] = useState(new Date().toLocaleTimeString());
-  const [genre, setGenre] = useState("dad");
+  const [genre, setGenre] = useState(
+    window.localStorage.getItem("genre") || "dad"
+  );
   const [joke, setJoke] = useState("");
+
+  const saveGenre = (genre) => {
+    window.localStorage.setItem("genre", genre);
+    setGenre(genre);
+  };
 
   const getDadJoke = () => {
     fetch("https://icanhazdadjoke.com/", {
@@ -57,7 +64,7 @@ export function App() {
     <div class="flex flex-col justify-center items-center w-full h-screen gap-y-8 dark:bg-slate-600">
       <Clock />
       <hr class="w-48 h-1 mx-auto my-4 bg-gray-100 border-0 rounded md:my-10 dark:bg-gray-700" />
-      <GenreSelector genre={genre} setGenre={setGenre} />
+      <GenreSelector genre={genre} setGenre={saveGenre} />
       <Joke joke={joke} />
 
       <span class="bg-blue-100 text-blue-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-200 border border-blue-400">
