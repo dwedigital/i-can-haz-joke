@@ -1,11 +1,10 @@
 import { useState } from "preact/hooks";
 import { useEffect } from "preact/hooks";
-import Footer from "./footer";
 import Button from "./button";
 import Joke from "./joke";
 import Clock from "./clock";
 import { GenreSelector } from "./utility";
-
+import BookList from "./book_list";
 export function App() {
   const [count, setCount] = useState(0);
   const [jokeTime, setJokeTime] = useState(new Date().toLocaleTimeString());
@@ -80,7 +79,7 @@ export function App() {
         {jokeTime}
       </span>
       <Button count={count} getJoke={getJoke} />
-      <Footer />
+      <BookList />
     </div>
   );
 }
